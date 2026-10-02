@@ -1,0 +1,163 @@
+# 证据报告 05:Abstract + Introduction 逐句功能标注(SSGC / EASE / BiLoRA)
+
+> 逐句标注三篇不同 venue、不同年代的一作论文。词数 = 空白分词计数;引文逐字,仅做跨行连字符与数学排版还原。
+> 功能标签体系:共识背景 / 现状描述 / 问题暴露 / 缺口锁定 / 二分定位 / 方法宣告 / 机制概述 / 理论声明 / 直觉解释 / 数值论证 / 定性战绩 / 假设提出 / 假设验证方式说明 / 贡献列举 / 过渡引出 / 让步转折 / 相关工作点评 / 资源指引(代码链接) / 优势阐明(定理的实际收益)。
+> 句间关系:支撑上句 / 转折反驳上句 / 递进深化 / 并列展开 / 因果承接 / 引出下句 / 实例化上句 / 收束前文 / 开启新话题。
+
+---
+
+## 论文 1:S²GC (ICLR 2021)
+
+### Abstract(9 句,186 词,平均 20.7 词/句)
+
+| # | 原句 | 词数 | 功能 | 与上句关系 | 与下句关系 |
+|---|---|---|---|---|---|
+| A1 | Graph Convolutional Networks (GCNs) are leading methods for learning graph representations. | 11 | 共识背景 | —(开篇) | 转折反驳 |
+| A2 | However, without specially designed architectures, the performance of GCNs degrades quickly with increased depth. | 14 | 问题暴露 | 转折反驳上句 | 因果承接 |
+| A3 | As the aggregated neighborhood size and neural network depth are two completely orthogonal aspects of graph representation, several methods focus on summarizing the neighborhood by aggregating K-hop neighborhoods of nodes while using shallow neural networks. | 35 | 二分定位+现状描述 | 因果承接 | 转折反驳 |
+| A4 | However, these methods still encounter oversmoothing, and suffer from high computation and storage costs. | 14 | 缺口锁定 | 转折反驳上句(第二次 However) | 因果承接 |
+| A5 | In this paper, we use a modified Markov Diffusion Kernel to derive a variant of GCN called Simple Spectral Graph Convolution (S²GC). | 22 | 方法宣告 | 因果承接(补缺口) | 递进深化 |
+| A6 | Our spectral analysis shows that our simple spectral graph convolution used in S²GC is a trade-off of low- and high-pass filter bands which capture the global and local contexts of each node. | 32 | 理论声明(兼机制概述) | 递进深化 | 并列展开 |
+| A7 | We provide two theoretical claims which demonstrate that we can aggregate over a sequence of increasingly larger neighborhoods compared to competitors while limiting severe oversmoothing. | 25 | 理论声明 | 并列展开 | 并列展开(理论→实验) |
+| A8 | Our experimental evaluations show that S²GC with a linear learner is competitive in text and node classification tasks. | 18 | 定性战绩 | 并列展开 | 并列展开 |
+| A9 | Moreover, S²GC is comparable to other state-of-the-art methods for node clustering and community prediction tasks. | 15 | 定性战绩 | 并列展开(Moreover) | —(结尾) |
+
+功能占比:背景 1 / 问题 1 / 二分现状 1 / 缺口 1 / 方法 1 / 理论 2 / 定性战绩 2;**数值论证 0 句**。特征:**双 However 漏斗**(两轮"进展→However"),理论证据先于实验证据。
+
+### Introduction(5 段,31 句,831 词,平均 26.8 词/句;无 bullet 贡献列表)
+
+**段落统计与功能:**
+
+| 段 | 句数 | 词数 | 段功能 | 段首句前 6 词(衔接方式) |
+|---|---|---|---|---|
+| P1 | 5 | 118 | 共识背景铺陈:深度学习→非欧数据→GCN/MPNN 定义链 | "In the past decade, deep learning..."(开篇) |
+| P2 | 6 | 170 | 问题暴露递进:浅层局限→oversmoothing 命名→残差无效→"深了白深" | "Despite their enormous success in many..."(让步承接) |
+| P3 | 9 | 233 | 二分定位 + 逐个点评 SGC/APPNP,两次 In contrast 插入自家卖点 | "One solution for that is to..."(因果承接) |
+| P4 | 3 | 114 | 相关工作点评收尾:批评 GDC + 三个正交方向挂名 | "GDC (Klicpera et al., 2019b) further..."(并列) |
+| P5 | 8 | 196 | 方法宣告+散文式贡献:机制、三条理论性质、实验覆盖、定性战绩 | "To tackle the above issues, we..."(收束引出) |
+
+**P2 关键句链**(问题段的递进解剖):让步长句堆应用清单再转折(49 词)→ "In other words, 2-layer GCN models aggregate nodes in two-hops neighborhood and thus have no ability to..."(换言之具体化,26 词)→ "Moreover, stacking more layers and adding a non-linearity tend to degrade..."(16 词)→ 现象命名+定义(39 词)→ "Even adding residual connections, an effective trick for training very deep CNNs, merely slows down the oversmoothing issue"(排除现成补救,24 词)→ 段级警句收束:"It appears that deep GCN models gain nothing but the performance degradation from the deep architecture."(16 词)。
+
+**P3 关键结构**(批评与自我对照成对出现):"Although APPNP relieves the oversmoothing problem, it employs a non-linear operation which requires costly computation..."(34 词,让步转折)→ "In contrast, we show that our approach enjoys a free derivative computed in the feed-forward step due to the use of a linear model."(24 词,方法宣告-对比式卖点)→ "Furthermore, APPNP aggregates over multiple k-hop neighborhoods ... making it difficult if not impossible to find a good value of balancing parameter."(39 词,缺陷 2)→ "In contrast, our approach aggregates over k-hop neighborhoods in a well-balanced manner."(12 词,卖点 2)。
+
+**P5 散文式贡献**(ICLR 风格,无 bullet):8 句 "we propose / we obtain / we show ×3 / we explain" 的 we-动词级联;其中 P5S4 是显式直觉解释句:"We explain that limiting overdominance of the largest neighborhoods in the aggregation step limits oversmoothing while preserving the large context of each node."(23 词)。
+
+功能分布:问题暴露 8(26%)、相关工作点评 6(19%)、方法宣告 3、理论声明 3、共识背景 2、现状描述 2、让步转折 2、二分定位 1、机制概述 1、直觉解释 1、假设验证方式说明 1、定性战绩 1。
+
+---
+
+## 论文 2:EASE (CVPR 2022)
+
+### Abstract(8 句,183 词,平均 22.9 词/句)
+
+| # | 原句 | 词数 | 功能 | 与上句关系 | 与下句关系 |
+|---|---|---|---|---|---|
+| A1 | Few-shot learning (FSL) has received a lot of attention due to its remarkable ability to adapt to novel classes. | 19 | 共识背景 | — | 转折反驳 |
+| A2 | Although many techniques have been proposed for FSL, they mostly focus on improving FSL backbones. | 15 | 现状描述(让步句式,隐式缺口) | 转折反驳上句 | 并列展开 |
+| A3 | Some works also focus on learning on top of the features generated by these backbones to adapt them to novel classes. | 21 | 现状描述(锁定小生境) | 并列展开 | 因果承接 |
+| A4 | We present an unsupErvised discriminAnt Subspace lEarning (EASE) that improves transductive few-shot learning performance by learning a linear projection onto a subspace built from features of the support set and the unlabeled query set in the test time. | 38 | 方法宣告 | 因果承接(**无显式 However 缺口句**) | 支撑上句 |
+| A5 | Specifically, based on the support set and the unlabeled query set, we generate the similarity matrix and the dissimilarity matrix based on the structure prior for the proposed EASE method, which is efficiently solved with SVD. | 36 | 机制概述 | 支撑上句(Specifically) | 并列展开 |
+| A6 | We also introduce conStraIned wAsserstein MEan Shift clustEring (SIAMESE) which extends Sinkhorn K-means by incorporating labeled support samples. | 18 | 方法宣告(第二组件) | 并列展开(also) | 支撑上句 |
+| A7 | SIAMESE works on the features obtained from EASE to estimate class centers and query predictions. | 15 | 机制概述(组件衔接) | 支撑上句 | 因果承接 |
+| A8 | On the mini-ImageNet, tiered-ImageNet, CIFAR-FS, CUB and OpenMIC benchmarks, both steps significantly boost the performance in transductive FSL and semi-supervised FSL. | 21 | 定性战绩(列基准不列数字) | 因果承接 | —(结尾) |
+
+功能占比:背景 1 / 现状 2 / 方法宣告 2 / 机制概述 2 / 定性战绩 1;**理论 0、数值 0、显式缺口 0**——方法浓度最高的摘要(方法+机制 4/8)。
+
+### Introduction(3 段 21 句 485 词 + 3 条贡献 103 词,平均 23.1 词/句)
+
+| 段 | 句数 | 词数 | 段功能 | 衔接 |
+|---|---|---|---|---|
+| P1 | 3 | 74 | 大背景+问题:监督学习成功但数据/标注稀缺 | 开篇 |
+| P2 | 7 | 142 | FSL 领域引入与 metric/meta/transfer 三分类学铺陈 | "In contrast to the requirement of..."(转折承接) |
+| P3 | 11 | 269 | **一段打完全场**:收窄 transductive→However 缺口→假设+三段机制+两句战绩 | "Several recent studies [4, 9, 10,..."(开启新话题·收窄) |
+
+**P3 完整句链**(11 句,是"单段全场"的范本):现状收窄(15)→ 二分定位 transductive vs inductive(41)→ "Therefore, transductive few-shot methods typically perform better than their inductive counterparts."(共识推断,11)→ 方法共性提炼(29)→ "However, such methods ignore the potential structure among the data points in the support set and the query set."(缺口锁定,19)→ "In this paper, we argue that features in the inference step can be approximately drawn from a union of multiple subspaces, and thus the sample affinity matrix follows the block-diagonal prior."(假设提出兼方法宣告,31)→ 机制概述组件 1(37)→ 组件 2(26)→ "Furthermore, we improve the final performance by refining each class mean with unlabeled data."(组件 3,14)→ 定性战绩(20)→ 效率卖点(26)。
+
+**Contributions:3 条,平均 34.3 词/条**(30/36/37)。内部结构:全部动词开头("We propose" ×3;条目 iii 前缀降格语 "As a minor contribution");**全部只写机制不写效果**——条目 1 = 纯假设主张,条目 2 = 命名 + which 从句机制 + 类比("akin to..."),条目 3 = 命名 + extends 基础 + by 机制 + 第二句说明组件位置。
+
+正文功能分布:现状描述 7(33%)、共识背景 3、机制概述 3、问题暴露 2、二分定位 2、定性战绩 2、缺口锁定 1、假设提出 1;**理论 0、数值 0、相关工作点评 0**(逐个点评全部推迟到 Related Work,intro 只用群体式引用)。
+
+---
+
+## 论文 3:BiLoRA (CVPR 2025)
+
+### Abstract(9 句,193 词,平均 21.4 词/句)
+
+| # | 原句 | 词数 | 功能 | 与上句关系 | 与下句关系 |
+|---|---|---|---|---|---|
+| A1 | Continual learning requires models to learn tasks sequentially while maintaining a delicate balance between stability (retaining knowledge of previous tasks) and plasticity (adapting to new tasks). | 26 | 共识背景(内嵌二分) | — | 递进深化 |
+| A2 | A key challenge is preventing interference between tasks which degrades performance when learning new tasks over previously learned tasks. | 19 | 问题暴露 | 递进深化 | 因果承接 |
+| A3 | Recent approaches leverage parameter-efficient fine-tuning (PEFT) which adapts pre-trained models by injecting a small number of learnable parameters. | 18 | 现状描述 | 因果承接 | 转折反驳 |
+| A4 | However, existing PEFT-based continual learning methods such as InfLoRA face fundamental limitations, i.e., they rely on complex optimization procedures to learn orthogonal task-specific spaces which is increasingly difficult as tasks accumulate. | 31 | 缺口锁定(**点名竞品**) | 转折反驳上句 | 因果承接 |
+| A5 | Thus, we propose a novel bilinear reformulation that fundamentally reimagines the task separation through fixed orthogonal bases. | 17 | 方法宣告 | 因果承接(Thus) | 支撑上句 |
+| A6 | Our key insight is that by expanding the parameter space quadratically through two fixed bases, we can achieve "almost orthogonal" task subspaces probabilistically, eliminating the need for explicit interference elimination procedures. | 31 | 机制概述(核心洞察) | 支撑上句 | 递进深化 |
+| A7 | We provide theoretical guarantees that this approach reduces the probability of task interference from O((k/d)²) to O((k/d²)²), ensuring reliable task separation without complex optimization. | 24 | 理论声明(带定量量级) | 递进深化(洞察→定理) | 并列展开 |
+| A8 | Through extensive experiments on ImageNet-R, CIFAR-100, and DomainNet, we validate our theoretical bounds and demonstrate state-of-the-art performance with reduced parameter count. | 21 | 定性战绩(兼理论验证) | 并列展开 | 并列展开 |
+| A9 | The code is available at: https://github.com/yifeiacc/BiLoRA. | 6 | 资源指引 | 并列展开 | —(结尾) |
+
+**每个功能恰好一句,教科书式"一句一功能"**;实验数字 0 句(唯一的"数"是理论量级)。
+
+### Introduction(5 段 18 句 410 词 + 4 条贡献 114 词,平均 22.8 词/句)
+
+| 段 | 句数 | 词数 | 段功能 | 衔接 |
+|---|---|---|---|---|
+| P1 | 3 | 73 | 共识背景:CL 定义、稳定-可塑二分、灾难性遗忘 | 开篇 |
+| P2 | 3 | 52 | 现状:预训练模型机遇→However 适配难→PEFT/LoRA | 因果承接 |
+| P3 | 3 | 62 | 问题:初步成功→However 失衡→根因=共享参数空间纠缠 | 递进深化 |
+| P4 | 4 | 96 | 缺口:点名 InfLoRA,两条量化缺陷 (1)(2),归因收束 | 因果承接 |
+| P5 | 5 | 127 | 方法:重构、almost-orthogonal 洞察、概率保证、FFT 实现 | 转折反驳上段 |
+
+**每段就是一个修辞动作,3–5 句一段。**
+
+P4 靶子段句链:点名(15)→ "While this approach provides task separation guarantees, it faces two critical limitations: (1) The number of tasks is strictly bounded by ... only ⌊d/r⌋ tasks can be supported."(让步+缺陷 1 含量化界,41)→ 缺陷 2(26)→ "These limitations stem from attempting to maintain perfect orthogonality within a fixed-dimensional parameter space."(根因收束,14)。
+
+P5 方法段句链:方法宣告(20)→ key insight 直觉句(36)→ "Specifically, ... we can theoretically guarantee that ..."(理论声明,27)→ "This probabilistic guarantee ... eliminates the need for explicit orthogonalization procedures while ensuring robust task separation."(优势阐明,18)→ "Moreover, our approach naturally maps to the frequency domain, where the Fourier basis provides both inherent structure ... and efficient computation through FFT."(机制概述,26)。
+
+**Contributions:4 条,平均 28.5 词/条,配额固定为方法→理论→实现→实验四件套**;条目 ii 内嵌 (1)(2) 并写入三个量级("both significantly improving upon the O(d/r) limit of existing methods" 是唯一的效果从句)。
+
+---
+
+## 跨三篇对比
+
+### Abstract 功能序列(骨架稳定,证据层随会议演化)
+
+| 论文 | 功能序列 |
+|---|---|
+| S²GC (ICLR'21) | 背景 → **However 问题** → 现状(二分)→ **However 缺口** → 方法 → 理论 → 理论 → 战绩 → 战绩 |
+| EASE (CVPR'22) | 背景 → 现状(Although 隐式缺口)→ 现状 → 方法 → 机制 → 方法₂ → 机制₂ → 战绩 |
+| BiLoRA (CVPR'25) | 背景 → 问题 → 现状 → **However 缺口** → 方法(Thus)→ 洞察 → 理论 → 战绩 → 代码 |
+
+- **共享脊柱**:`背景(1 句) → 问题/现状交替(1–3 句) → 缺口 → 方法宣告 → 展开(机制或理论 2–3 句) → 定性战绩(1–2 句)`,四年三会不变。方法宣告句永远带缩写品牌。
+- **摘要预算几乎恒定**:183 / 186 / 193 词(185±10),句数 8–9,平均句长 20.7–22.9 词。
+- **变的是证据层**:ICLR 版理论 2 句在实验前;CVPR'22 理论 0 句全给机制;CVPR'25 回归理论 1 句且带量级,新增代码句。
+- **三篇摘要均无任何实验数字**——战绩全是定性表述;唯一的"数"是 BiLoRA 的理论量级。
+
+### Introduction 预算
+
+| 指标 | S²GC (ICLR) | EASE (CVPR'22) | BiLoRA (CVPR'25) |
+|---|---|---|---|
+| 段数 | 5 | 3 | 5 |
+| 各段词数 | 118/170/233/114/196 | 74/142/269 | 73/52/62/96/127 |
+| 正文句数/词数 | 31 / 831 | 21 / 485 | 18 / 410 |
+| Contributions | 无(末段 8 句散文) | 3 条 / 103 词(均 34.3) | 4 条 / 114 词(均 28.5) |
+| 词数峰值段 | P3(竞品交锋,233) | P3(一段全场,269) | P5(方法段,127) |
+
+- ICLR intro ≈ CVPR 的 1.4–1.6 倍,多出的预算全花在**逐个点评竞品**上。
+- 两篇 CVPR 总预算相近但切分哲学相反:EASE "3 段漏斗"(74→142→269 递增,末段 11 句一口气);BiLoRA "5 段短打"(每段 3–5 句只做一个修辞动作)。
+- 段间衔接:三篇的段首句都显式回指,段间关系以因果承接和转折为主,**几乎不用无预警的话题跳转**。
+
+### ICLR vs CVPR 句子层面差异
+
+| 维度 | S²GC | EASE | BiLoRA |
+|---|---|---|---|
+| Intro 平均句长 | **26.8 词** | 23.1 词 | 22.8 词 |
+| 理论声明句占比 | **12.5%** | 0% | 7.4% |
+| 数值论证句 | 0 | 0 | 0 |
+| Intro 内相关工作点评句 | **19%**(逐个交锋) | 0(全推 RW 节) | 5.6%(单靶) |
+| 转折/让步标记密度 | ≈25% | ≈22% | ≈22% |
+| 贡献呈现 | 散文 we-动词级联 | 罗马数字 3 条,只写机制 | 罗马数字 4 条,方法/理论/实现/实验 |
+
+**结论性观察**
+1. **不变量**:摘要 185 词左右、8–9 句、"背景→缺口→方法→证据→战绩"骨架、方法句带缩写品牌、约 1/4 句子携带转折枢纽、Abstract/Intro 绝不报具体实验数字。
+2. **会议自适应发生在证据层与结构层**:ICLR 把理论当第一证据 + intro 内逐句交锋 + 无 bullet;CVPR 把机制当第一证据 + 交锋外包给 Related Work + 必配 bullet contributions。
+3. **时间演化(2022→2025)**:段落变短变纯(11 句巨段 → 3–5 句短段)、缺口从匿名变成点名量化、贡献从三条变成四件套、摘要补代码链接。
